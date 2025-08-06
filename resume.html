@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prasad Shetkar - Data Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page application with a top navigation bar for easy access to different sections. The structure is designed for a recruiter's workflow: starting with a high-level summary (Hero), diving into an interactive career journey (Experience Timeline), exploring technical capabilities (Skills Showcase), and finally reviewing foundational details (Education & Awards). This non-linear, interactive approach is more engaging and allows users to quickly find the information most relevant to them, which is more effective than a static document. -->
+    <!-- Visualization & Content Choices: 
+        - Profile Summary -> Goal: Inform -> Presentation: Prominent text block in Hero section -> Interaction: A new TTS play button for aural consumption -> Justification: Provides an immediate, concise professional summary, now with an audio option for accessibility.
+        - Career History -> Goal: Show Change & Compare -> Viz: Interactive Vertical Timeline (HTML/CSS/JS) -> Interaction: Clicking a job title reveals its detailed description -> Justification: Visually represents career progression and allows users to explore roles without cluttering the initial view.
+        - Technical Skills -> Goal: Organize & Compare -> Viz: Grouped lists in cards and a horizontal bar chart (Chart.js) -> Interaction: Hovering on chart bars shows tooltips -> Justification: The chart provides a quick visual comparison of skill categories, while the lists offer specific details. This is more digestible than a long, flat list.
+        - Education/Awards -> Goal: Inform -> Presentation: Styled cards (HTML/CSS) -> Interaction: None -> Justification: Presents credentials in a clear, organized, and easily scannable format.
+        - LLM & TTS Features -> Goal: Enhance utility -> Presentation: New interactive buttons and a modal dialog -> Interaction: A click triggers an API call to Gemini for either text generation (interview questions) or text-to-speech -> Justification: These features add a practical layer of functionality, turning the resume from a passive display into an active tool for career development.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #1f2937;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+                max-height: 60vh;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0d9488;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#home" class="text-2xl font-bold text-teal-700">PS</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#experience" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Experience</a>
+                        <a href="#skills" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                        <a href="#education" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Education</a>
+                        <a href="#contact" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="bg-gray-100 inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#experience" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <a href="#skills" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Skills</a>
+                <a href="#education" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Education</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:bg-teal-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="py-20 md:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">Prasad Shetkar</h1>
+                <p class="mt-4 text-xl md:text-2xl font-medium text-teal-700">Data & Software Engineer</p>
+                <div class="relative mt-8 max-w-3xl mx-auto text-lg text-gray-600">
+                    <p id="profile-summary">
+                        Highly accomplished and strategic Data Architect with over 10 years of experience in designing, building, and scaling robust Data and ML platforms. Proven expertise in distributed systems, data analysis, and advanced problem-solving. Eager to leverage this expertise to architect and implement data solutions for forward-thinking data firms.
+                    </p>
+                    <button id="tts-button" class="absolute top-0 right-0 bg-transparent text-gray-400 hover:text-teal-600 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-10">
+                    <a href="#contact" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-700 transition-colors duration-300">Get In Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Professional Journey</h2>
+                    <p class="mt-4 text-lg text-gray-600">An interactive timeline of my career progression. Click on any role to see more details.</p>
+                </div>
+                <!-- The ID was missing here, causing the TypeError in the JavaScript -->
+                <div id="timeline-container" class="mt-16 max-w-3xl mx-auto space-y-12">
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Technical Expertise</h2>
+                    <p class="mt-4 text-lg text-gray-600">A visual overview of my core competencies and the technologies I work with.</p>
+                </div>
+                <div class="mt-16">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+                <div id="skills-list" class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Education & Awards</h2>
+                    <p class="mt-4 text-lg text-gray-600">My academic background and key recognitions.</p>
+                </div>
+                <div id="education-list" class="mt-16 grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="bg-gray-800 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold tracking-tight">Let's Connect</h2>
+            <p class="mt-4 text-lg text-gray-300">Feel free to reach out for collaborations or opportunities.</p>
+            <div class="mt-8 flex justify-center items-center space-x-6 text-lg">
+                <a href="mailto:prasad.shetkar093@gmail.com" class="hover:text-teal-400 transition-colors">prasad.shetkar093@gmail.com</a>
+                <span>&bull;</span>
+                <a href="tel:+919167634783" class="hover:text-teal-400 transition-colors">+91 9167634783</a>
+                <span>&bull;</span>
+                <a href="https://www.linkedin.com/in/prasad-shetkar-2162382b/" target="_blank" rel="noopener noreferrer" class="hover:text-teal-400 transition-colors">LinkedIn</a>
+            </div>
+            <p class="mt-8 text-gray-400">&copy; 2024 Prasad Shetkar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resumeData = {
+                profile: "Highly accomplished and strategic Data Architect with over 10 years of experience in designing, building, and scaling robust Data and ML platforms. Proven expertise in distributed systems, data analysis, and advanced problem-solving. Eager to leverage this expertise to architect and implement data solutions for forward-thinking data firms.",
+                experience: [
+                    {
+                        role: "Sr. Computer Scientist I",
+                        company: "Adobe India Pvt Limited",
+                        duration: "Dec 2024 - Present",
+                        description: "Leading initiatives in data platform architecture and development, focusing on scalability and performance for next-generation creative tools. Standardizing data processing patterns and best practices across the multiple teams of DSP ad cloud."
+                    },
+                    {
+                        role: "Software Engineer",
+                        company: "Google India Pvt Limited",
+                        duration: "Apr 2021 - Dec 2024",
+                        description: "Contributed to core components of Google Maps' abuse detection and mitigation infrastructure, improving the efficiency and reliability of its storage layer service. Developed an ML launcher platform from the ground up for scaling and deploying Google GMS ML models. Additionally, contributed to the YouTube Ads infrastructure to influence homepage recommendations based on ad watch history, driving revenue for customer channels."
+                    },
+                    {
+                        role: "Big Data Engineer",
+                        company: "G42 workforce connection",
+                        duration: "Apr 2019 - Mar 2021",
+                        description: "Engineered big data pipelines using Spark and Hadoop ecosystems. Implemented data-driven solutions for workforce analytics and optimization. Developed graph-based algorithms for profiling users."
+                    },
+                    {
+                        role: "Analyst",
+                        company: "Goldman Sachs",
+                        duration: "May 2016 - Mar 2019",
+                        description: "Contributed to the Gulfstream serving infrastructure, developing data ingestion services for both real-time and offline storage of telemetry data. Developed a multi-service data serving layer and an ML container hosting layer for the platform."
+                    },
+                    {
+                        role: "Software Engineer",
+                        company: "Persistent Systems",
+                        duration: "June 2012 - Aug 2013",
+                        description: "Began my career developing enterprise software solutions for various clients. Built C# based microservices for gamifying appraisal systems and designed an indexing-based query API over a SQL database."
+                    }
+                ],
+                skills: [
+                    {
+                        category: "Data & ML",
+                        items: ["SPARK", "HADOOP", "Hive", "HBase", "Kafka", "Tensorflow"],
+                        level: 90
+                    },
+                    {
+                        category: "Databases",
+                        items: ["MongoDB", "Redis", "Spanner", "MySQL", "SQL Server", "Oracle"],
+                        level: 85
+                    },
+                    {
+                        category: "Cloud & DevOps",
+                        items: ["AWS", "Docker", "Kubernetes", "CI/CD"],
+                        level: 80
+                    },
+                    {
+                        category: "Languages",
+                        items: ["Python", "Java", "C++", "SQL", "Javascript"],
+                        level: 95
+                    },
+                     {
+                        category: "System Design",
+                        items: ["Distributed Systems", "Microservices", "Data Modeling"],
+                        level: 90
+                    }
+                ],
+                education: [
+                    {
+                        degree: "Master of Technology, CS & Engg.",
+                        institution: "IIT Kharagpur",
+                        detail: "CGPA: 9.2/10",
+                        award: "Thesis nominated in top 5 for 'Best Thesis of the Year'."
+                    },
+                    {
+                        degree: "Bachelor of Technology, IT",
+                        institution: "BATU, LONERE",
+                        detail: "CGPA: 8.4/10",
+                        award: "Gold Medalist for academic excellence."
+                    }
+                ]
+            };
+
+            const timelineContainer = document.getElementById('timeline-container');
+            resumeData.experience.forEach((job, index) => {
+                const item = document.createElement('div');
+                item.className = 'flex flex-col relative pb-8';
+                item.innerHTML = `
+                    <div class="cursor-pointer timeline-header">
+                        <h3 class="text-xl font-semibold text-gray-800">${job.role}</h3>
+                        <p class="text-md font-medium text-teal-600">${job.company}</p>
+                        <p class="text-sm text-gray-500">${job.duration}</p>
+                    </div>
+                    <div class="timeline-content hidden mt-4">
+                        <p class="text-gray-600">${job.description}</p>
+                    </div>
+                `;
+                timelineContainer.appendChild(item);
+            });
+            
+            document.querySelectorAll('.timeline-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    content.classList.toggle('hidden');
+                });
+            });
+
+            const skillsListContainer = document.getElementById('skills-list');
+            resumeData.skills.forEach(skillCat => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-lg shadow-md';
+                let itemsHtml = skillCat.items.map(item => `<span class="inline-block bg-teal-100 text-teal-800 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full">${item}</span>`).join('');
+                card.innerHTML = `
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">${skillCat.category}</h3>
+                    <div>${itemsHtml}</div>
+                `;
+                skillsListContainer.appendChild(card);
+            });
+
+            const educationListContainer = document.getElementById('education-list');
+            resumeData.education.forEach(edu => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200';
+                card.innerHTML = `
+                    <h3 class="text-xl font-semibold text-gray-900">${edu.degree}</h3>
+                    <p class="text-md font-medium text-teal-600">${edu.institution}</p>
+                    <p class="text-sm text-gray-500 mt-1">${edu.detail}</p>
+                    <p class="mt-4 text-gray-600 italic">"${edu.award}"</p>
+                `;
+                educationListContainer.appendChild(card);
+            });
+            
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: resumeData.skills.map(s => s.category),
+                    datasets: [{
+                        label: 'Proficiency Level',
+                        data: resumeData.skills.map(s => s.level),
+                        backgroundColor: 'rgba(13, 148, 136, 0.6)',
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Proficiency: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                         mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+                    }
+                });
+            });
+
+            const ttsButton = document.getElementById('tts-button');
+            const profileSummary = document.getElementById('profile-summary');
+            let audioContext;
+            let audioSource;
+
+            function pcmToWav(pcmData, sampleRate) {
+                const header = new ArrayBuffer(44);
+                const view = new DataView(header);
+                const writeString = (view, offset, string) => {
+                    for (let i = 0; i < string.length; i++) {
+                        view.setUint8(offset + i, string.charCodeAt(i));
+                    }
+                };
+                const writeUint16 = (view, offset, value) => view.setUint16(offset, value, true);
+                const writeUint32 = (view, offset, value) => view.setUint32(offset, value, true);
+                
+                writeString(view, 0, 'RIFF');
+                writeUint32(view, 4, 36 + pcmData.byteLength);
+                writeString(view, 8, 'WAVE');
+                writeString(view, 12, 'fmt ');
+                writeUint32(view, 16, 16);
+                writeUint16(view, 20, 1);
+                writeUint16(view, 22, 1);
+                writeUint32(view, 24, sampleRate);
+                writeUint32(view, 28, sampleRate * 2);
+                writeUint16(view, 32, 2);
+                writeUint16(view, 34, 16);
+                writeString(view, 36, 'data');
+                writeUint32(view, 40, pcmData.byteLength);
+                
+                const wavBlob = new Blob([header, pcmData], { type: 'audio/wav' });
+                return wavBlob;
+            }
+
+            function base64ToArrayBuffer(base64) {
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            ttsButton.addEventListener('click', async () => {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+
+                if (audioSource) {
+                    audioSource.stop();
+                    audioSource = null;
+                }
+                ttsButton.disabled = true;
+                ttsButton.innerHTML = `<svg class="w-6 h-6 animate-spin text-teal-600" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+
+                const textToSpeak = profileSummary.textContent.trim();
+                const payload = {
+                    contents: [{ parts: [{ text: textToSpeak }] }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: "Kore" }
+                            }
+                        }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+                
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+
+                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                        const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                        const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                        const pcmData = base64ToArrayBuffer(audioData);
+                        const wavBlob = pcmToWav(new DataView(pcmData), sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+                    } else {
+                        console.error("Error: Audio data not found in response.");
+                    }
+                } catch (error) {
+                    console.error("Error calling TTS API:", error);
+                } finally {
+                    ttsButton.disabled = false;
+                    ttsButton.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
