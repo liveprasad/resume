@@ -101,7 +101,9 @@
                     <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Architecture & Leadership Journey</h2>
                     <p class="mt-4 text-lg text-gray-600">Interactive engineering history. Click on a role to review the underlying infrastructure systems built.</p>
                 </div>
-                <div id="timeline-container" class="mt-16 max-w-3xl mx-auto space-y-0 border-l-2 border-teal-600 ml-4 md:mx-auto pl-6">
+                <div class="mt-16 max-w-3xl mx-auto px-4">
+                    <div id="timeline-container" class="border-l-2 border-teal-600 space-y-6">
+                    </div>
                 </div>
             </div>
         </section>
@@ -235,9 +237,9 @@
             const timelineContainer = document.getElementById('timeline-container');
             resumeData.experience.forEach((job) => {
                 const item = document.createElement('div');
-                item.className = 'relative pl-2 pb-8 group';
+                item.className = 'relative pl-6 pb-2 group';
                 item.innerHTML = `
-                    <div class="absolute -left-[31px] top-1.5 bg-teal-600 rounded-full w-4 h-4 border-2 border-white group-hover:bg-teal-500 transition-colors"></div>
+                    <div class="absolute -left-[9px] top-7 bg-teal-600 rounded-full w-4 h-4 border-2 border-white group-hover:bg-teal-500 transition-colors z-10"></div>
                     <div class="cursor-pointer timeline-header bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:border-teal-200 transition-all">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
                             <h3 class="text-xl font-semibold text-gray-800 text-left">${job.role}</h3>
@@ -289,4 +291,159 @@
                 type: 'bar',
                 data: {
                     labels: resumeData.skills.map(s => s.category),
-                    datasets:
+                    datasets: [{
+                        label: 'Architectural Domain Depth',
+                        data: resumeData.skills.map(s => s.level),
+                        backgroundColor: 'rgba(13, 148, 136, 0.7)',
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { display: false }
+                        },
+                        y: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Proficiency level: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                         mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+                    }
+                });
+            });
+
+            const ttsButton = document.getElementById('tts-button');
+            const profileSummary = document.getElementById('profile-summary');
+            let audioContext;
+            let audioSource;
+
+            function pcmToWav(pcmData, sampleRate) {
+                const header = new ArrayBuffer(44);
+                const view = new DataView(header);
+                const writeString = (view, offset, string) => {
+                    for (let i = 0; i < string.length; i++) {
+                        view.setUint8(offset + i, string.charCodeAt(i));
+                    }
+                };
+                const writeUint16 = (view, offset, value) => view.setUint16(offset, value, true);
+                const writeUint32 = (view, offset, value) => view.setUint32(offset, value, true);
+                
+                writeString(view, 0, 'RIFF');
+                writeUint32(view, 4, 36 + pcmData.byteLength);
+                writeString(view, 8, 'WAVE');
+                writeString(view, 12, 'fmt ');
+                writeUint32(view, 16, 16);
+                writeUint16(view, 20, 1);
+                writeUint16(view, 22, 1);
+                writeUint32(view, 24, sampleRate);
+                writeUint32(view, 28, sampleRate * 2);
+                writeUint16(view, 32, 2);
+                writeUint16(view, 34, 16);
+                writeString(view, 36, 'data');
+                writeUint32(view, 40, pcmData.byteLength);
+                
+                return new Blob([header, pcmData], { type: 'audio/wav' });
+            }
+
+            function base64ToArrayBuffer(base64) {
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            ttsButton.addEventListener('click', async () => {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+
+                if (audioSource) {
+                    audioSource.stop();
+                    audioSource = null;
+                }
+                ttsButton.disabled = true;
+                ttsButton.innerHTML = `<svg class="w-6 h-6 animate-spin text-teal-600" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+
+                const textToSpeak = profileSummary.textContent.trim();
+                const payload = {
+                    contents: [{ parts: [{ text: textToSpeak }] }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: "Kore" }
+                            }
+                        }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+                
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+
+                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                        const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                        const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                        const pcmData = base64ToArrayBuffer(audioData);
+                        const wavBlob = pcmToWav(new DataView(pcmData), sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+                    } else {
+                        console.error("Audio payload configuration mismatch.");
+                    }
+                } catch (error) {
+                    console.error("Error executing custom speech compilation streams:", error);
+                } finally {
+                    ttsButton.disabled = false;
+                    ttsButton.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
