@@ -3,22 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prasad Shetkar - Data Architect</title>
+    <title>Prasad Shetkar - ML & AI Agentic Infrastructure Architect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A single-page application with a top navigation bar for easy access to different sections. The structure is designed for a recruiter's workflow: starting with a high-level summary (Hero), diving into an interactive career journey (Experience Timeline), exploring technical capabilities (Skills Showcase), and finally reviewing foundational details (Education & Awards). This non-linear, interactive approach is more engaging and allows users to quickly find the information most relevant to them, which is more effective than a static document. -->
-    <!-- Visualization & Content Choices: 
-        - Profile Summary -> Goal: Inform -> Presentation: Prominent text block in Hero section -> Interaction: A new TTS play button for aural consumption -> Justification: Provides an immediate, concise professional summary, now with an audio option for accessibility.
-        - Career History -> Goal: Show Change & Compare -> Viz: Interactive Vertical Timeline (HTML/CSS/JS) -> Interaction: Clicking a job title reveals its detailed description -> Justification: Visually represents career progression and allows users to explore roles without cluttering the initial view.
-        - Technical Skills -> Goal: Organize & Compare -> Viz: Grouped lists in cards and a horizontal bar chart (Chart.js) -> Interaction: Hovering on chart bars shows tooltips -> Justification: The chart provides a quick visual comparison of skill categories, while the lists offer specific details. This is more digestible than a long, flat list.
-        - Education/Awards -> Goal: Inform -> Presentation: Styled cards (HTML/CSS) -> Interaction: None -> Justification: Presents credentials in a clear, organized, and easily scannable format.
-        - LLM & TTS Features -> Goal: Enhance utility -> Presentation: New interactive buttons and a modal dialog -> Interaction: A click triggers an API call to Gemini for either text generation (interview questions) or text-to-speech -> Justification: These features add a practical layer of functionality, turning the resume from a passive display into an active tool for career development.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -39,47 +30,6 @@
                 height: 300px;
                 max-height: 60vh;
             }
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-        }
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0d9488;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -128,19 +78,19 @@
         <section id="home" class="py-20 md:py-32">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">Prasad Shetkar</h1>
-                <p class="mt-4 text-xl md:text-2xl font-medium text-teal-700">Data & Platform Software Engineer</p>
-                <div class="relative mt-8 max-w-3xl mx-auto text-lg text-gray-600">
+                <p class="mt-4 text-xl md:text-2xl font-medium text-teal-700">ML & AI Agentic Infrastructure Architect</p>
+                <div class="relative mt-8 max-w-3xl mx-auto text-lg text-gray-600 px-8">
                     <p id="profile-summary">
-                        Highly accomplished and strategic Data Architect with over 10 years of experience in designing, building, and scaling robust Data and ML platforms. Proven expertise in distributed systems, data analysis, and advanced problem-solving. Eager to leverage this expertise to architect and implement data solutions for forward-thinking data firms.
+                        Distinguished technical leader with over 11 years of strategic experience designing, scaling, and operationalizing performance-critical distributed computing platforms. Specialized in building enterprise-grade MLOps ecosystems, highly optimized hosting frameworks for foundational models, vector search optimization, and production LLM agentic orchestration frameworks.
                     </p>
-                    <button id="tts-button" class="absolute top-0 right-0 bg-transparent text-gray-400 hover:text-teal-600 transition-colors">
+                    <button id="tts-button" class="absolute top-0 right-0 bg-transparent text-gray-400 hover:text-teal-600 transition-colors" title="Listen to Summary">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
                         </svg>
                     </button>
                 </div>
                 <div class="mt-10">
-                    <a href="#contact" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-700 transition-colors duration-300">Get In Touch</a>
+                    <a href="#contact" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-700 transition-colors duration-300">Let's Connect</a>
                 </div>
             </div>
         </section>
@@ -148,11 +98,10 @@
         <section id="experience" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Professional Journey</h2>
-                    <p class="mt-4 text-lg text-gray-600">An interactive timeline of my career progression. Click on any role to see more details.</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Architecture & Leadership Journey</h2>
+                    <p class="mt-4 text-lg text-gray-600">Interactive engineering history. Click on a role to review the underlying infrastructure systems built.</p>
                 </div>
-                <!-- The ID was missing here, causing the TypeError in the JavaScript -->
-                <div id="timeline-container" class="mt-16 max-w-3xl mx-auto space-y-12">
+                <div id="timeline-container" class="mt-16 max-w-3xl mx-auto space-y-0 border-l-2 border-teal-600 ml-4 md:mx-auto pl-6">
                 </div>
             </div>
         </section>
@@ -160,8 +109,8 @@
         <section id="skills" class="py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Technical Expertise</h2>
-                    <p class="mt-4 text-lg text-gray-600">A visual overview of my core competencies and the technologies I work with.</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Core Competency Matrix</h2>
+                    <p class="mt-4 text-lg text-gray-600">Strategic split across AI/ML runtimes, high-throughput systems, and real-time distributed storage.</p>
                 </div>
                 <div class="mt-16">
                     <div class="chart-container">
@@ -176,8 +125,8 @@
         <section id="education" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Education & Awards</h2>
-                    <p class="mt-4 text-lg text-gray-600">My academic background and key recognitions.</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Education & Foundations</h2>
+                    <p class="mt-4 text-lg text-gray-600">Academic credentials rooted in advanced distributed computing research.</p>
                 </div>
                 <div id="education-list" class="mt-16 grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
                 </div>
@@ -188,84 +137,83 @@
     <footer id="contact" class="bg-gray-800 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-bold tracking-tight">Let's Connect</h2>
-            <p class="mt-4 text-lg text-gray-300">Feel free to reach out for collaborations or opportunities.</p>
-            <div class="mt-8 flex justify-center items-center space-x-6 text-lg">
+            <p class="mt-4 text-lg text-gray-300">Seeking strategic leadership, Staff-level, or infrastructure advisory roles across high-impact AI ecosystems.</p>
+            <div class="mt-8 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 text-lg">
                 <a href="mailto:prasad.shetkar093@gmail.com" class="hover:text-teal-400 transition-colors">prasad.shetkar093@gmail.com</a>
-                <span>&bull;</span>
+                <span class="hidden sm:inline">&bull;</span>
                 <a href="tel:+919167634783" class="hover:text-teal-400 transition-colors">+91 9167634783</a>
-                <span>&bull;</span>
+                <span class="hidden sm:inline">&bull;</span>
                 <a href="https://www.linkedin.com/in/prasad-shetkar-2162382b/" target="_blank" rel="noopener noreferrer" class="hover:text-teal-400 transition-colors">LinkedIn</a>
             </div>
-            <p class="mt-8 text-gray-400">&copy; 2024 Prasad Shetkar. All Rights Reserved.</p>
+            <p class="mt-12 text-gray-400 text-sm">&copy; 2026 Prasad Shetkar. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const resumeData = {
-                profile: "Highly accomplished and strategic Data and Platform Architect with over 10 years of experience in designing, building, and scaling robust Data and ML platforms. Proven expertise in distributed systems, data analysis, and advanced problem-solving. Eager to leverage this expertise to architect and implement data solutions for forward-thinking data firms.",
                 experience: [
                     {
                         role: "Sr. Computer Scientist I",
                         company: "Adobe India Pvt Limited",
                         duration: "Dec 2024 - Present",
-                        description: "Leading initiatives in data platform architecture and development, focusing on scalability and performance for next-generation creative tools. Standardizing data processing patterns and best practices across the multiple teams of DSP ad cloud."
+                        description: "Leading technical architecture for the Platform Intelligence organization, specifically engineering generative AI workflows, context-aware LLM agentic frameworks, and ultra-high-throughput data reconciliation backends. Standardizing multi-tenant data stream design patterns and low-latency storage strategies across global DSP ad cloud clusters."
                     },
                     {
                         role: "Software Engineer",
                         company: "Google India Pvt Limited",
                         duration: "Apr 2021 - Dec 2024",
-                        description: "Contributed to core components of Google Maps' abuse detection and mitigation infrastructure, improving the efficiency, performance and reliability of its storage layer service. Developed an ML launcher platform from the ground up for scaling and deploying Google GMS ML models. Additionally, contributed to the YouTube Ads infrastructure to influence homepage recommendations based on ad watch history, driving revenue for customer channels."
+                        description: "Architected and implemented a high-performance distributed ML orchestrator and runner platform from scratch, enabling the automated scaling, evaluation, and seamless deployment of large-scale Google GMS machine learning models. Built low-latency, resilient storage fabrics for Google Maps abuse detection layers operating at massive scale. Optimized data processing layers within YouTube Ads infrastructure to realign content recommendation graphs dynamically based on active ad sequence interactions."
                     },
                     {
                         role: "Big Data Engineer",
-                        company: "G42 workforce connection",
+                        company: "G42 Workforce Connection",
                         duration: "Apr 2019 - Mar 2021",
-                        description: "Engineered big data pipelines using Spark and Hadoop ecosystems. Implemented data-driven solutions for workforce analytics and optimization. Developed graph-based algorithms for profiling users."
+                        description: "Designed multi-tier real-time data ingestion backends to serve sophisticated workforce analytics. Built highly parallel, graph-theoretic distributed models using Apache Spark to synthesize deep multi-dimensional behavioral profiling engines over highly continuous incoming event logs."
                     },
                     {
                         role: "Analyst",
                         company: "Goldman Sachs",
                         duration: "May 2016 - Mar 2019",
-                        description: "Contributed to the Gulfstream serving infrastructure, developing data ingestion services for both real-time and offline storage of telemetry data. Developed a multi-service data serving layer and an ML container hosting layer for the platform."
+                        description: "Developed performance-critical telemetry streaming layers and data virtualization backends under the Gulfstream core infrastructure umbrella. Architected an immutable, highly sandboxed ML model deployment container execution framework, offering sub-millisecond network isolation, data validation protocols, and standardized serving layers."
                     },
                     {
                         role: "Software Engineer",
                         company: "Persistent Systems",
-                        duration: "June 2011 - Aug 2012",
-                        description: "Began my career developing enterprise software solutions for various clients. Built C# based microservices for gamifying appraisal systems and designed an indexing-based query API over a SQL database."
+                        duration: "June 2012 - Aug 2013",
+                        description: "Pioneered microservice architectures using highly parallel patterns for business logic metrics. Implemented custom high-performance indexing abstractions over large-scale relational schemas to heavily accelerate lookup workflows."
                     }
                 ],
                 skills: [
                     {
-                        category: "BI & Observability",
-                        items: ["Monarch", "Prometheus", "Datahub", "Metabase", "PowerBI", "Trino", "Iceberg", "Graffana"],
-                        level: 90
+                        category: "AI Agentic & ML Infra",
+                        items: ["LLM Orchestration Frameworks", "RAG Pipeline Design", "Vector Databases (Pinecone, Weaviate)", "MLOps & Model Governance", "Distributed Serving Frameworks", "Tensorflow"],
+                        level: 96
                     },
                     {
-                        category: "Data & ML",
-                        items: ["SPARK", "HADOOP", "Hive", "Bigtable", "Kafka", "Tensorflow", "Pubsub",],
-                        level: 90
-                    },
-                    {
-                        category: "Databases",
-                        items: ["MongoDB", "Redis", "Hazelcast", "Aerospike", "Spanner", "MySQL", "SQL Server", "Oracle"],
-                        level: 85
-                    },
-                    {
-                        category: "Cloud & DevOps",
-                        items: ["AWS", "Docker", "Kubernetes", "CI/CD","ML ops tooling"],
-                        level: 80
-                    },
-                    {
-                        category: "Languages",
-                        items: ["Python", "Java", "C++", "SQL", "Javascript"],
+                        category: "Distributed Systems & Architecture",
+                        items: ["High-Throughput Ingestion", "Massive Systems Design", "Asynchronous Messaging Systems", "Data Isolation Fabrics", "Microservices Patterns", "gRPC / Protobuf"],
                         level: 95
                     },
-                     {
-                        category: "System Design",
-                        items: ["Distributed Systems", "Microservices", "Data Modeling", "ML ops", "Messaging Systems" , "GRpc", "Indexing & Query services"],
+                    {
+                        category: "Big Data Systems",
+                        items: ["Apache Spark", "Apache Kafka", "Apache Flink", "Hadoop Ecosystem", "Data Ingestion Fabrics", "Trino / Iceberg Engine"],
+                        level: 94
+                    },
+                    {
+                        category: "Performance Languages",
+                        items: ["C++ (System & CP)", "Python (Data/ML/Orchestration)", "Java", "SQL Execution Internals"],
+                        level: 95
+                    },
+                    {
+                        category: "Storage Tiers & NoSQL",
+                        items: ["BigTable", "HBase", "Google Spanner", "Redis Cache Fabric", "MongoDB", "Hazelcast / Aerospike Memory Tiers"],
                         level: 90
+                    },
+                    {
+                        category: "Cloud, Kernel & OS",
+                        items: ["Kubernetes", "Docker Engine", "AWS Ecosystem", "Linux (Ubuntu / Mint Systems)", "WSL Core Integration", "CI/CD Orchestration Platforms"],
+                        level: 88
                     }
                 ],
                 education: [
@@ -273,29 +221,32 @@
                         degree: "Master of Technology, CS & Engg.",
                         institution: "IIT Kharagpur",
                         detail: "CGPA: 9.2/10",
-                        award: "Thesis nominated in top 5 for 'Best Thesis of the Year'."
+                        award: "Thesis focusing on advanced distributed computing concepts nominated within the Top 5 for 'Best Thesis of the Year'."
                     },
                     {
                         degree: "Bachelor of Technology, IT",
-                        institution: "BATU, LONERE",
+                        institution: "BATU, Lonere",
                         detail: "CGPA: 8.4/10",
-                        award: "Gold Medalist for academic excellence."
+                        award: "Gold Medalist for outstanding historical academic excellence."
                     }
                 ]
             };
 
             const timelineContainer = document.getElementById('timeline-container');
-            resumeData.experience.forEach((job, index) => {
+            resumeData.experience.forEach((job) => {
                 const item = document.createElement('div');
-                item.className = 'flex flex-col relative pb-8';
+                item.className = 'relative pl-2 pb-8 group';
                 item.innerHTML = `
-                    <div class="cursor-pointer timeline-header">
-                        <h3 class="text-xl font-semibold text-gray-800">${job.role}</h3>
-                        <p class="text-md font-medium text-teal-600">${job.company}</p>
-                        <p class="text-sm text-gray-500">${job.duration}</p>
-                    </div>
-                    <div class="timeline-content hidden mt-4">
-                        <p class="text-gray-600">${job.description}</p>
+                    <div class="absolute -left-[31px] top-1.5 bg-teal-600 rounded-full w-4 h-4 border-2 border-white group-hover:bg-teal-500 transition-colors"></div>
+                    <div class="cursor-pointer timeline-header bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:border-teal-200 transition-all">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                            <h3 class="text-xl font-semibold text-gray-800 text-left">${job.role}</h3>
+                            <span class="text-sm font-semibold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full mt-1 sm:mt-0 self-start sm:self-auto whitespace-nowrap">${job.duration}</span>
+                        </div>
+                        <p class="text-md font-medium text-gray-600 mt-1 text-left">${job.company}</p>
+                        <div class="timeline-content hidden mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-gray-600 text-sm leading-relaxed text-left">${job.description}</p>
+                        </div>
                     </div>
                 `;
                 timelineContainer.appendChild(item);
@@ -303,7 +254,7 @@
             
             document.querySelectorAll('.timeline-header').forEach(header => {
                 header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
+                    const content = header.querySelector('.timeline-content');
                     content.classList.toggle('hidden');
                 });
             });
@@ -311,11 +262,11 @@
             const skillsListContainer = document.getElementById('skills-list');
             resumeData.skills.forEach(skillCat => {
                 const card = document.createElement('div');
-                card.className = 'bg-white p-6 rounded-lg shadow-md';
-                let itemsHtml = skillCat.items.map(item => `<span class="inline-block bg-teal-100 text-teal-800 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full">${item}</span>`).join('');
+                card.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-100';
+                let itemsHtml = skillCat.items.map(item => `<span class="inline-block bg-teal-50 text-teal-800 text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full border border-teal-100">${item}</span>`).join('');
                 card.innerHTML = `
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">${skillCat.category}</h3>
-                    <div>${itemsHtml}</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 text-left">${skillCat.category}</h3>
+                    <div class="flex flex-wrap">${itemsHtml}</div>
                 `;
                 skillsListContainer.appendChild(card);
             });
@@ -323,12 +274,12 @@
             const educationListContainer = document.getElementById('education-list');
             resumeData.education.forEach(edu => {
                 const card = document.createElement('div');
-                card.className = 'bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200';
+                card.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-100';
                 card.innerHTML = `
-                    <h3 class="text-xl font-semibold text-gray-900">${edu.degree}</h3>
-                    <p class="text-md font-medium text-teal-600">${edu.institution}</p>
-                    <p class="text-sm text-gray-500 mt-1">${edu.detail}</p>
-                    <p class="mt-4 text-gray-600 italic">"${edu.award}"</p>
+                    <h3 class="text-xl font-semibold text-gray-900 text-left">${edu.degree}</h3>
+                    <p class="text-md font-medium text-teal-700 mt-1 text-left">${edu.institution}</p>
+                    <p class="text-sm text-gray-500 mt-1 text-left">${edu.detail}</p>
+                    <p class="mt-4 text-gray-600 italic text-sm text-left">"${edu.award}"</p>
                 `;
                 educationListContainer.appendChild(card);
             });
@@ -338,165 +289,4 @@
                 type: 'bar',
                 data: {
                     labels: resumeData.skills.map(s => s.category),
-                    datasets: [{
-                        label: 'Proficiency Level',
-                        data: resumeData.skills.map(s => s.level),
-                        backgroundColor: 'rgba(13, 148, 136, 0.6)',
-                        borderColor: 'rgba(13, 148, 136, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                             grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `Proficiency: ${context.raw}%`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
-            });
-
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (!mobileMenu.classList.contains('hidden')) {
-                         mobileMenu.classList.add('hidden');
-                         mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
-                    }
-                });
-            });
-
-            const ttsButton = document.getElementById('tts-button');
-            const profileSummary = document.getElementById('profile-summary');
-            let audioContext;
-            let audioSource;
-
-            function pcmToWav(pcmData, sampleRate) {
-                const header = new ArrayBuffer(44);
-                const view = new DataView(header);
-                const writeString = (view, offset, string) => {
-                    for (let i = 0; i < string.length; i++) {
-                        view.setUint8(offset + i, string.charCodeAt(i));
-                    }
-                };
-                const writeUint16 = (view, offset, value) => view.setUint16(offset, value, true);
-                const writeUint32 = (view, offset, value) => view.setUint32(offset, value, true);
-                
-                writeString(view, 0, 'RIFF');
-                writeUint32(view, 4, 36 + pcmData.byteLength);
-                writeString(view, 8, 'WAVE');
-                writeString(view, 12, 'fmt ');
-                writeUint32(view, 16, 16);
-                writeUint16(view, 20, 1);
-                writeUint16(view, 22, 1);
-                writeUint32(view, 24, sampleRate);
-                writeUint32(view, 28, sampleRate * 2);
-                writeUint16(view, 32, 2);
-                writeUint16(view, 34, 16);
-                writeString(view, 36, 'data');
-                writeUint32(view, 40, pcmData.byteLength);
-                
-                const wavBlob = new Blob([header, pcmData], { type: 'audio/wav' });
-                return wavBlob;
-            }
-
-            function base64ToArrayBuffer(base64) {
-                const binaryString = atob(base64);
-                const len = binaryString.length;
-                const bytes = new Uint8Array(len);
-                for (let i = 0; i < len; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                return bytes.buffer;
-            }
-
-            ttsButton.addEventListener('click', async () => {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-
-                if (audioSource) {
-                    audioSource.stop();
-                    audioSource = null;
-                }
-                ttsButton.disabled = true;
-                ttsButton.innerHTML = `<svg class="w-6 h-6 animate-spin text-teal-600" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
-
-                const textToSpeak = profileSummary.textContent.trim();
-                const payload = {
-                    contents: [{ parts: [{ text: textToSpeak }] }],
-                    generationConfig: {
-                        responseModalities: ["AUDIO"],
-                        speechConfig: {
-                            voiceConfig: {
-                                prebuiltVoiceConfig: { voiceName: "Kore" }
-                            }
-                        }
-                    },
-                    model: "gemini-2.5-flash-preview-tts"
-                };
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-                
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    const result = await response.json();
-                    const part = result?.candidates?.[0]?.content?.parts?.[0];
-                    const audioData = part?.inlineData?.data;
-                    const mimeType = part?.inlineData?.mimeType;
-
-                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
-                        const sampleRateMatch = mimeType.match(/rate=(\d+)/);
-                        const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
-                        const pcmData = base64ToArrayBuffer(audioData);
-                        const wavBlob = pcmToWav(new DataView(pcmData), sampleRate);
-                        const audioUrl = URL.createObjectURL(wavBlob);
-                        const audio = new Audio(audioUrl);
-                        audio.play();
-                    } else {
-                        console.error("Error: Audio data not found in response.");
-                    }
-                } catch (error) {
-                    console.error("Error calling TTS API:", error);
-                } finally {
-                    ttsButton.disabled = false;
-                    ttsButton.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>`;
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+                    datasets:
